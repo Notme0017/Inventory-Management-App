@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%=title%></title>
+</head>
+<body>
+  <h1><%=title%></h1>
+  <%-include('partials/errors') %>
+  <form action="/create" method="post">
+    <label for="title">Title: </label>
+    <input type="text" name="title" id="title" required>
+    <%-include('partials/genre', {genres: genres}) %>
+    <label for="developer">Developed By: </label>
+    <input type="text" name="developer" id="developer"required>
+    <label for="year">Year: </label>
+    <input type="number" placeholder="YYYY" min="1900" name="year_of_release" id="year" required>
+
+    <button type="submit">Add</button>
+  </form>
+</body>
+</html>
