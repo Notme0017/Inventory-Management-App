@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("node:path");
 const {error} = require("node:console");
 const operationsRouter = require("./routes/operationsRouter");
+const genreRouter = require("./routes/genreRouter");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
 
 app.use('/', operationsRouter);
+app.use('/genres', genreRouter);
 
 app.use((req, res) =>{
   res.status(404).send("Page not found");

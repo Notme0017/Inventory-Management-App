@@ -94,9 +94,60 @@ async function getAllGenres() {
   return rows;
 }
 
+async function getGamesByGenre() {
+  const {rows} = await pool.query(
+    `SELECT ge.id AS genre_id, ge.name AS genre_name,
+            g.id AS game_id, g.title, g.year_of_release
+    FROM genres ge
+    LEFT JOIN games g ON g.genre_id = ge.id
+    ORDER BY ge.name, g.title`
+  );
+
+  const grouped = [];
+  const byId = new Map();
+
+  for(const row of rows){
+    let genre = byId.get(row.genre_id);
+    if(!genre){
+      genre = {id: row.genre_id, name: row.genre_name, games:[]};
+      byId.set(row.genre_id, genre);
+      grouped.push(genre);
+    }
+
+    if(row.game_id !== null){
+      genre.games.push({
+        id: row.game_id,
+        title: row.title,
+        year_of_release: row.year_of_release,
+      });
+    }
+  }
+  return grouped;
+};
+
+async function countGamesInGenres(id) {
+  const{rows} = await pool.query(
+    `SELECT COUNT(*)::int AS count FROM games WHERE genre_id = $1`, [id]
+  );
+  return rows[0].count;
+}
+
+async function deleteGenreById(id) {
+  await pool.query(`DELETE FROM genres WHERE id = $1`, [id]);
+}
+
+async function addGenre(genre) {
+  await pool.query(`INSERT INTO genres (name) VALUES ($1)
+      ON CONFLICT (LOWER(name)) DO UPDATE SET name = genres.name`, [genre]);
+}
+
 module.exports = {getAllGames, 
                   getGameById, 
                   addGame, 
                   updateGame, 
                   deleteGameById,
-                  getAllGenres};
+                  getAllGenres,
+                  getGamesByGenre,
+                  countGamesInGenres,
+                  deleteGenreById,
+                  addGenre};

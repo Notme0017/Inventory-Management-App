@@ -3,20 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
   <title><%=title%></title>
 </head>
 <body>
-  <h1><%=title%></h1>
-  <%-include("partials/errors.ejs") %>
-  <form action="/update/<%=game.id%>" method="post">
-    <label for="title">Title: </label>
-    <input type="text" name="title" id="title" value="<%=game.title%>" required>
-    <%-include("partials/genre", {genres: genres})%>
-    <label for="developer">Developer: </label>
-    <input type="text" name="developer" id="developer" value="<%=game.developer%>" required>
-    <label for="year_of_release">Year: </label>
-    <input type="number" name="year_of_release" id="year_of_release" min="1900" value="<%=game.year_of_release%>" required>
-    <button type="submit">Submit</button>
-  </form>
+  <%- include('partials/nav') %>
+
+  <main>
+    <h1><%= title %></h1>
+    <%- include('partials/errors') %>
+
+    <form class="form-card" action="/update/<%= game.id %>" method="post">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" value="<%= game.title %>" required>
+
+      <%- include('partials/genre', { genres: genres, selectedGenre: game.genre_id }) %>
+
+      <label for="developer">Developer</label>
+      <input type="text" name="developer" id="developer" value="<%= game.developer %>" required maxlength="255">
+
+      <label for="year_of_release">Year</label>
+      <input type="number" name="year_of_release" id="year_of_release" min="1900" value="<%= game.year_of_release %>" required>
+
+      <button type="submit">Update</button>
+    </form>
+  </main>
 </body>
 </html>

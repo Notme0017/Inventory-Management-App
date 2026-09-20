@@ -17,6 +17,7 @@ CREATE TABLE developers(
 );
 
 CREATE UNIQUE INDEX developers_name_lower_idx ON developers (LOWER(name));
+CREATE UNIQUE INDEX genres_name_lower_idx ON genres (LOWER(name));
 
 CREATE TABLE IF NOT EXISTS games(
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

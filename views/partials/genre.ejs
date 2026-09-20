@@ -1,8 +1,10 @@
-<label for="genre_id">Choose a genre: </label>
+<label for="genre_id">Genre</label>
 
 <select name="genre_id" id="genre_id" required>
   <option value="">--Select a genre--</option>
-  <% genres.forEach(genre =>{ %>
-    <option value="<%=genre.id%>"><%=genre.name%></option>
-  <%})%>
+  <% genres.forEach(genre => { %>
+    <option value="<%= genre.id %>" <%= locals.selectedGenre == genre.id ? "selected" : "" %>>
+      <%= genre.name %>
+    </option>
+  <% }) %>
 </select>
